@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÁguiaPass | Passagens de Ônibus Águia Branca</title>
+    <link rel="stylesheet" href="">
+    <!-- CSS Customizado -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 1. NAVBAR -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="brand-logo">
+                <i class="fa-solid fa-bus-simple"></i>
+                Águia<span>Pass</span>
+            </a>
+            <nav style="display: flex; gap: 1.5rem; font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">
+                <a href="#vantagens">Vantagens</a>
+                <a href="#destinos">Principais Destinos</a>
+                <a href="#faq">Dúvidas</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION + BUSCADOR PRINCIPAL -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="pulse-badge" style="background: rgba(255,184,0,0.15); color: var(--accent); border: 1px solid var(--accent); margin-bottom: 1rem;">
+                <span class="pulse-dot" style="background: var(--accent);"></span> Parceiro Oficial Águia Branca
+            </span>
+            <h1 class="hero-title">
+                Sua passagem com o <br><span>menor preço e sem filas</span>
+            </h1>
+            <p class="hero-subtitle">
+                Reserve em menos de 2 minutos, receba o bilhete digital no seu celular e viaje no maior conforto rodoviário.
+            </p>
+        </div>
+
+        <!-- Card de Busca -->
+        <div class="search-card">
+            <form id="searchForm" class="search-form">
+                <div class="input-group">
+                    <label for="origem">Sua Origem</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <input type="text" id="origem" placeholder="Ex: Vitória / Vila Velha" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="destino">Seu Destino</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-route"></i>
+                        <input type="text" id="destino" placeholder="Ex: Rio de Janeiro" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="dataViagem">Data da Viagem</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="date" id="dataViagem" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>BUSCAR PASSAGEM</span>
+                </button>
+            </form>
+
+            <div style="display: flex; justify-content: center; gap: 1.5rem; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-top: 1.2rem; border-top: 1px solid var(--border); padding-top: 0.8rem; flex-wrap: wrap;">
+                <span><i class="fa-solid fa-check text-success" style="color: #10B981;"></i> Sem Taxa Extra de Guichê</span>
+                <span><i class="fa-solid fa-qrcode" style="color: var(--primary-light);"></i> Embarque Direto com QR Code</span>
+                <span><i class="fa-solid fa-shield-halved" style="color: #10B981;"></i> Compra Garantida</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SELETOR DE POLTRONAS INTERATIVO (REVELADO APÓS BUSCA) -->
+    <section id="seatPickerSection" class="seat-picker-section" style="display: none;">
+        <h3 style="text-align: center; font-size: 1.4rem; font-weight: 800; color: var(--primary-dark);">
+            Escolha as suas poltronas
+        </h3>
+        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Clique nas poltronas verdes para selecionar
+        </p>
+
+        <!-- Layout do Ônibus -->
+        <div class="bus-layout">
+            <div class="bus-steering-wheel">
+                <i class="fa-solid fa-steering-wheel" title="Frente do Ônibus / Motorista"></i> 🚌
+            </div>
+            
+            <div id="busGrid" class="bus-grid">
+                <!-- Gerado Dinamicamente via script.js -->
+            </div>
+        </div>
+
+        <!-- Legenda -->
+        <div class="seat-legend">
+            <div class="legend-item"><div class="legend-box" style="background: var(--seat-free);"></div> Livre</div>
+            <div class="legend-item"><div class="legend-box" style="background: var(--seat-selected);"></div> Sua Escolha</div>
+            <div class="legend-item"><div class="legend-box" style="background: var(--seat-occupied);"></div> Ocupada</div>
+        </div>
+
+        <!-- Resumo da Seleção e Checkout -->
+        <div style="background: #F1F5F9; border-radius: var(--radius-sm); padding: 1.2rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Poltronas selecionadas (<span id="selectedSeatsCount">0</span>):</span>
+                <strong id="selectedSeatsList" style="font-size: 1rem; color: var(--primary-dark);">Nenhuma</strong>
+            </div>
+            <div>
+                <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Valor Total:</span>
+                <strong id="totalPrice" style="font-size: 1.4rem; color: #10B981;">R$ 0,00</strong>
+            </div>
+            <button id="btnCheckout" class="btn-primary" disabled style="width: 100%; margin-top: 0.5rem; opacity: 0.5; cursor: not-allowed;">
+                GARANTIR MINHA RESERVA <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- 4. SEÇÃO DE VANTAGENS -->
+    <section id="vantagens" style="max-width: 1100px; margin: 4rem auto; padding: 0 1.5rem;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <span style="color: var(--primary-light); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">A Melhor Experiência de Viagem</span>
+            <h2 style="font-size: 2rem; font-weight: 800; color: var(--primary-dark); margin-top: 0.3rem;">Por que viajar com a gente?</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            
+            <!-- Vantagens da ÁguiaPass -->
+            <div style="background: var(--card-bg); border-radius: var(--radius-md); padding: 2rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+                <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem;">
+                    <div style="width: 42px; height: 42px; background: rgba(0,85,165,0.1); color: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        <i class="fa-solid fa-laptop-mobile"></i>
+                    </div>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--primary-dark);">Vantagens Online ÁguiaPass</h3>
+                </div>
+
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
+                    <li style="display: flex; gap: 0.8rem;">
+                        <i class="fa-solid fa-circle-check" style="color: #10B981; margin-top: 4px;"></i>
+                        <div>
+                            <strong>Pagamento Instantâneo via PIX:</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Confirmação em segundos para você garantir sua poltrona preferida.</p>
+                        </div>
+                    </li>
+                    <li style="display: flex; gap: 0.8rem;">
+                        <i class="fa-solid fa-circle-check" style="color: #10B981; margin-top: 4px;"></i>
+                        <div>
+                            <strong>Bilhete 100% Digital no WhatsApp:</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Nada de imprimir papéis. Mostre o QR Code na tela do celular e embarque direto.</p>
+                        </div>
+                    </li>
+                    <li style="display: flex; gap: 0.8rem;">
+                        <i class="fa-solid fa-circle-check" style="color: #10B981; margin-top: 4px;"></i>
+                        <div>
+                            <strong>Troca e Cancelamento Sem Complicação:</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Precisa mudar a data? Remarque direto pelo site em poucos cliques.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Vantagens da Águia Branca -->
+            <div style="background: var(--card-bg); border-radius: var(--radius-md); padding: 2rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+                <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem;">
+                    <div style="width: 42px; height: 42px; background: rgba(255,184,0,0.15); color: var(--primary-dark); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        <i class="fa-solid fa-couch"></i>
+                    </div>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--primary-dark);">Conforto Águia Branca</h3>
+                </div>
+
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
+                    <li style="display: flex; gap: 0.8rem;">
+                        <i class="fa-solid fa-wifi" style="color: var(--primary-light); margin-top: 4px;"></i>
+                        <div>
+                            <strong>Wi-Fi Grátis & Tomadas USB-C:</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Mantenha seus dispositivos carregados e navegue durante toda a viagem.</p>
+                        </div>
+                    </li>
+                    <li style="display: flex; gap: 0.8rem;">
+                        <i class="fa-solid fa-bed" style="color: var(--primary-light); margin-top: 4px;"></i>
+                        <div>
+                            <strong>Poltronas Leito e Leito-Cama:</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Reclinação total, descanso para pernas e travesseiros higienizados.</p>
+                        </div>
+                    </li>
+                    <li style="display: flex; gap: 0.8rem;">
+                        <i class="fa-solid fa-clock-check" style="color: var(--primary-light); margin-top: 4px;"></i>
+                        <div>
+                            <strong>Segurança & Pontualidade 98%+:</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Monitoramento por GPS 24h e motoristas altamente treinados.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 5. PRINCIPAIS DESTINOS -->
+    <section id="destinos" style="background: #F1F5F9; padding: 4rem 1.5rem;">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <span style="color: var(--primary-light); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">As Rotas Mais Desejadas</span>
+                    <h2 style="font-size: 2rem; font-weight: 800; color: var(--primary-dark); margin-top: 0.2rem;">Destinos em Destaque</h2>
+                </div>
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent-hover);">
+                    <i class="fa-solid fa-fire" style="color: #EF4444;"></i> Alta procura para este final de semana
+                </span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                
+                <!-- Card 1 -->
+                <div style="background: var(--card-bg); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+                    <div style="padding: 1.25rem; background: var(--primary-dark); color: #fff; position: relative;">
+                        <span style="background: #EF4444; color: #fff; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; padding: 3px 8px; border-radius: 50px; position: absolute; top: 12px; right: 12px;">Últimos Assentos</span>
+                        <h4 style="font-size: 1.1rem; font-weight: 800;">Vitória ➔ Rio de Janeiro</h4>
+                        <span style="font-size: 0.75rem; color: #CBD5E1;">Saídas diárias (Manhã, Tarde e Leito Noturno)</span>
+                    </div>
+                    <div style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="margin-bottom: 1rem;">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">A partir de</span>
+                            <span style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">R$ 119,90</span>
+                        </div>
+                        <button onclick="fillSearch('Vitória', 'Rio de Janeiro')" class="btn-primary" style="width: 100%; font-size: 0.85rem; padding: 0.7rem;">
+                            VER HORÁRIOS <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div style="background: var(--card-bg); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+                    <div style="padding: 1.25rem; background: var(--primary-dark); color: #fff; position: relative;">
+                        <span style="background: var(--accent); color: var(--primary-dark); font-size: 0.65rem; font-weight: 800; text-transform: uppercase; padding: 3px 8px; border-radius: 50px; position: absolute; top: 12px; right: 12px;">Mais Procurado</span>
+                        <h4 style="font-size: 1.1rem; font-weight: 800;">Vila Velha ➔ Porto Seguro</h4>
+                        <span style="font-size: 0.75rem; color: #CBD5E1;">Direto para o litoral baiano</span>
+                    </div>
+                    <div style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="margin-bottom: 1rem;">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">A partir de</span>
+                            <span style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">R$ 149,00</span>
+                        </div>
+                        <button onclick="fillSearch('Vila Velha', 'Porto Seguro')" class="btn-primary" style="width: 100%; font-size: 0.85rem; padding: 0.7rem;">
+                            VER HORÁRIOS <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div style="background: var(--card-bg); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+                    <div style="padding: 1.25rem; background: var(--primary-dark); color: #fff; position: relative;">
+                        <span style="background: #10B981; color: #fff; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; padding: 3px 8px; border-radius: 50px; position: absolute; top: 12px; right: 12px;">Melhor Custo</span>
+                        <h4 style="font-size: 1.1rem; font-weight: 800;">Vitória ➔ São Paulo</h4>
+                        <span style="font-size: 0.75rem; color: #CBD5E1;">Ônibus Executivos e Leito</span>
+                    </div>
+                    <div style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="margin-bottom: 1rem;">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">A partir de</span>
+                            <span style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">R$ 169,90</span>
+                        </div>
+                        <button onclick="fillSearch('Vitória', 'São Paulo')" class="btn-primary" style="width: 100%; font-size: 0.85rem; padding: 0.7rem;">
+                            VER HORÁRIOS <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. FOOTER -->
+    <footer style="background: var(--primary-dark); color: var(--text-muted); padding: 3rem 1.5rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+            <a href="#" class="brand-logo" style="color: #fff;">
+                <i class="fa-solid fa-bus-simple"></i> Águia<span>Pass</span>
+            </a>
+            <p style="font-size: 0.8rem; max-width: 600px;">
+                ÁguiaPass — Agência de Viagens e Emissão de Passagens Autorizada. Imagens e frota operadas pela Viação Águia Branca S/A.
+            </p>
+            <p style="font-size: 0.75rem; color: #64748B;">
+                © 2026 ÁguiaPass. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JS AUXILIAR -->
+    <script>
+        function fillSearch(origem, destino) {
+            document.getElementById('origem').value = origem;
+            document.getElementById('destino').value = destino;
+            document.getElementById('searchForm').scrollIntoView({ behavior: 'smooth' });
+            const btn = document.querySelector('.search-form .btn-primary');
+            btn.style.transform = 'scale(1.05)';
+            setTimeout(() => btn.style.transform = 'scale(1)', 300);
+        }
+    </script>
+
+    <!-- Script Principal da Aplicação -->
+    <script src="script.js"></script>
+</body>
+</html>

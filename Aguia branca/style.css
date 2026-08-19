@@ -1,0 +1,357 @@
+/* ==========================================================================
+   1. DESIGN SYSTEM & CORES (ÁGUIAPASS BRANDING)
+   ========================================================================== */
+:root {
+  --primary: #003366;          /* Azul Águia Branca */
+  --primary-dark: #001F3F;     /* Azul Noturno */
+  --primary-light: #0055A5;    /* Azul Conecta */
+  --accent: #FFB800;           /* Dourado / Amarelo Destaque */
+  --accent-hover: #E6A300;     /* Hover Dourado */
+  
+  --bg-light: #F8FAFC;         /* Fundo Principal */
+  --card-bg: #FFFFFF;          /* Fundo dos Cards */
+  --text-main: #0F172A;        /* Texto Principal */
+  --text-muted: #64748B;       /* Texto Secundário */
+  
+  --seat-free: #E2E8F0;        /* Poltrona Livre */
+  --seat-selected: #10B981;    /* Poltrona Selecionada (Verde) */
+  --seat-occupied: #94A3B8;    /* Poltrona Ocupada (Cinza) */
+  
+  --border: #E2E8F0;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 10px 25px -5px rgba(0, 51, 102, 0.1);
+  --shadow-lg: 0 20px 35px -10px rgba(0, 51, 102, 0.2);
+  --transition: all 0.25s ease-in-out;
+}
+
+/* ==========================================================================
+   2. RESET & BASE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ==========================================================================
+   3. HEADER & NAVBAR
+   ========================================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+}
+
+.brand-logo span {
+  color: var(--primary-light);
+}
+
+/* ==========================================================================
+   4. HERO & BUSCADOR (CRO)
+   ========================================================================== */
+.hero {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
+  color: #FFFFFF;
+  padding: 3.5rem 1.5rem 6rem;
+  text-align: center;
+  position: relative;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero-title span {
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #CBD5E1;
+  max-width: 650px;
+  margin: 0.75rem auto 2rem;
+}
+
+.search-card {
+  max-width: 950px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  color: var(--text-main);
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.input-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-muted);
+}
+
+.input-wrapper input,
+.input-wrapper select {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-light);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  transition: var(--transition);
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(0, 85, 165, 0.1);
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: var(--primary-dark);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(255, 184, 0, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 184, 0, 0.4);
+}
+
+/* ==========================================================================
+   5. SEÇÃO DO SELETOR DE POLTRONAS (CORRIGIDO E ALINHADO)
+   ========================================================================== */
+.seat-picker-section {
+  max-width: 600px;
+  margin: 2rem auto 4rem;
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+}
+
+.bus-layout {
+  max-width: 320px;
+  margin: 1.5rem auto;
+  background: #F1F5F9;
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 1.5rem 1.25rem;
+}
+
+.bus-steering-wheel {
+  text-align: right;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px dashed var(--border);
+}
+
+/* Grid com 5 colunas: 2 Poltronas | Corredor (20px) | 2 Poltronas */
+.bus-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) 20px repeat(2, 1fr);
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.seat {
+  width: 100%;
+  height: 42px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+
+/* Espaçador do Corredor Central */
+.aisle {
+  grid-column: 3;
+  height: 100%;
+}
+
+.seat.free {
+  background-color: var(--seat-free);
+  color: var(--text-main);
+  border: 1px solid #CBD5E1;
+}
+
+.seat.free:hover {
+  background-color: #CBD5E1;
+  transform: scale(1.05);
+}
+
+.seat.selected {
+  background-color: var(--seat-selected);
+  color: #FFFFFF;
+  border: 1px solid #059669;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.seat.occupied {
+  background-color: var(--seat-occupied);
+  color: #FFFFFF;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.seat-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   6. ANIMAÇÕES & BADGES CRO (GATILHOS DE URGÊNCIA)
+   ========================================================================== */
+.pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 50px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 184, 0, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(255, 184, 0, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 184, 0, 0); }
+}
+
+/* ==========================================================================
+   7. RESPONSIVIDADE (MOBILE FIRST)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .hero {
+    padding: 2.5rem 1rem 4rem;
+  }
+  
+  .search-card {
+    padding: 1.25rem;
+  }
+  
+  .search-form {
+    grid-template-columns: 1fr;
+  }
+
+  .seat-picker-section {
+    padding: 1.5rem 1rem;
+    margin: 1.5rem 0.75rem 3rem;
+  }
+}
